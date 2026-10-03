@@ -42,15 +42,18 @@ GenAI Layer (LLM)
 ## Project Structure
 bfsi-churn-risk-scoring/
 ├── notebooks/
-│   ├── 01_data_generation.ipynb    # Synthetic data — 3-table PostgreSQL schema
-│   ├── 02_eda.ipynb                # EDA, feature engineering, correlation analysis
-│   ├── 03_churn_model.ipynb        # Classification model, SMOTE, ROC-AUC
-│   ├── 04_risk_scoring.ipynb       # Risk scoring + anomaly detection
-│   └── 05_genai_layer.ipynb        # LLM-powered retention strategy generator
+│   ├── 01_data_generation_and_EDA.ipynb   # Synthetic data — 3-table PostgreSQL schema, EDA, feature engineering, correlation analysis
+│   ├── 02_churn_model.ipynb       # Classification model, SMOTE, ROC-AUC
+│   ├── 03_Risk_scoring.ipynb      # Risk scoring + anomaly detection
+│   └── 04_genai_layer.ipynb       # LLM-powered retention strategy generator
 ├── data/
-│   └── README.md                   # Schema docs (data regenerated from notebook)
-├── outputs/                        # Saved plots and model artifacts
-├── DATA_RATIONALE.md               # Full methodology and source documentation
+│   └── README.md                  # Schema docs (data regenerated from notebook)
+├── outputs/
+│   ├── plots/
+│   │   ├── eda/                   # EDA visualizations
+│   │   └── models/                # Model performance plots
+│   └── genai_layer/               # Retention strategies + executive summary
+├── DATA_RATIONALE.md              # Full methodology and source documentation
 └── README.md
 
 ---
@@ -63,7 +66,7 @@ bfsi-churn-risk-scoring/
 | Machine Learning | Scikit-learn, Imbalanced-learn (SMOTE) |
 | Visualization | Matplotlib, Seaborn |
 | Anomaly Detection | Isolation Forest |
-| GenAI Layer | LangChain, Groq API, RAGAS |
+| GenAI Layer | Groq API (`openai/gpt-oss-120b`) |
 | Environment | Google Colab |
 | Database Simulated | PostgreSQL (3-table warehouse schema) |
 
@@ -71,15 +74,15 @@ bfsi-churn-risk-scoring/
 
 ## Key Results
 
-| Model | Metric | Score |
+### Churn Prediction Model
+
+**| Metric | Logistic Regression | Random Forest (tuned) |
 |---|---|---|
-| Churn Classifier (Random Forest) | ROC-AUC | TBD |
-| Churn Classifier | Precision | TBD |
-| Churn Classifier | Recall | TBD |
-| Anomaly Detection | Isolation Forest contamination | 5% |
-
-*Results will be updated after each notebook is completed*
-
+| ROC-AUC | 0.9824 | 0.9813 |
+| Precision | — | 0.8974 |
+| Recall | — | 0.8621 |
+| F1 Score | — | 0.8794 |
+Random Forest was selected as the production model for its balance of precision and recall on the minority (churn) class after SMOTE balancing, despite a marginally lower ROC-AUC than Logistic Regression.**
 ---
 
 ## ML Features Engineered
@@ -93,6 +96,14 @@ bfsi-churn-risk-scoring/
 | `avg_unique_stocks` | Diversification = stickier customer |
 | `products_used` | Cross-sold customers retain better |
 
+### Risk & Anomaly Detection
+
+| Metric | Value |
+|---|---|
+| Isolation Forest contamination | 5% |
+| Risk tiers | Low / Medium / High / Critical |
+| Customer segments | Mass / Affluent / HNI / Ultra HNI |
+
 ---
 
 ## How To Run
@@ -101,6 +112,17 @@ bfsi-churn-risk-scoring/
 2. Run `01_data_generation.ipynb` first — generates all CSV files
 3. Run notebooks in sequence: 01 → 02 → 03 → 04 → 05
 4. Each notebook saves plots to the `outputs/` folder
+
+## GenAI Action Layer (Notebook 05)
+
+The final stage converts quantitative risk scores into human-readable, actionable outputs:
+
+- **Retention strategies**: generated via Groq API (`openai/gpt-oss-120b`) for 6 representative customers — one per `recommended_action` category — grounded strictly in fields present in `risk_scores_final.csv` (no fabricated customer detail).
+- **Executive summary**: a leadership-facing briefing where all quantitative claims (churn %, trade value at risk, segment distribution) are computed deterministically in pandas and passed to the LLM as ground truth; the model handles narrative synthesis and prioritization, not calculation.
+
+**Outputs**: `outputs/genai_layer/retention_strategies.json`, `retention_strategies.txt`, `executive_summary.txt`
+
+**Design note**: During development, the Groq `llama3-*` model family was deprecated from the free/developer tier mid-project — the notebook now includes a live model-availability check against `client.models.list()` to avoid silent failures on future deprecations. Separately, a rule-priority gap was identified and documented: anomaly detection currently overrides segment/tier when assigning `recommended_action`, so no Ultra HNI Critical customer can receive the "Dedicated RM call within 24 hours" action if they also trip the anomaly flag — flagged as a candidate fix for notebook 04 rather than silently worked around.
 
 ---
 
@@ -120,7 +142,21 @@ Full methodology documented in [DATA_RATIONALE.md](./DATA_RATIONALE.md)
 ---
 
 ## Business Impact
+## Business Impact
 
+Based on risk scoring across [10,000 / 50,000] customers:
+
+| Risk Category | Customers | % of Base | Trade Value Exposed |
+|---|---|---|---|
+| Critical tier | [critical_count] | [X]% | ₹[critical_trade_value] |
+| High tier | [high_count] | [X]% | — |
+| Flagged anomalous trading | [anomaly_count] | [X]% | — |
+
+**Segment concentration**: [X]% of Critical-tier customers fall in the HNI/Ultra HNI segments, representing disproportionate trade-value risk relative to their share of the customer base — these customers warrant the highest-touch retention response (dedicated RM outreach within 24–48 hours).
+
+**Operational translation**: the risk scoring + GenAI layer converts a [10,000 / 50,000]-customer base into a prioritized action queue — [815] customers routed to automated campaigns, [457] to personalized RM email outreach, [167] to urgent RM calls, and [360] flagged for compliance/algo-trading review — rather than leaving relationship teams to manually triage the full customer base.
+
+**Caveat**: this is a synthetic dataset built for methodology demonstration; the figures above illustrate the *shape* of risk concentration a real brokerage might expect to find, not validated production numbers.
 
 
 ---
