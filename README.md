@@ -76,13 +76,13 @@ bfsi-churn-risk-scoring/
 
 ### Churn Prediction Model
 
-**| Metric | Logistic Regression | Random Forest (tuned) |
+| Metric | Logistic Regression | Random Forest (tuned) |
 |---|---|---|
 | ROC-AUC | 0.9824 | 0.9813 |
 | Precision | — | 0.8974 |
 | Recall | — | 0.8621 |
 | F1 Score | — | 0.8794 |
-Random Forest was selected as the production model for its balance of precision and recall on the minority (churn) class after SMOTE balancing, despite a marginally lower ROC-AUC than Logistic Regression.**
+Random Forest was selected as the production model for its balance of precision and recall on the minority (churn) class after SMOTE balancing, despite a marginally lower ROC-AUC than Logistic Regression.
 ---
 
 ## ML Features Engineered
@@ -141,7 +141,6 @@ Full methodology documented in [DATA_RATIONALE.md](./DATA_RATIONALE.md)
 
 ---
 
-## Business Impact
 ## Business Impact
 
 Based on risk scoring across [10,000 / 50,000] customers:
