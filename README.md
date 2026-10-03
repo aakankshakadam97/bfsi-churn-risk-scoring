@@ -143,20 +143,21 @@ Full methodology documented in [DATA_RATIONALE.md](./DATA_RATIONALE.md)
 
 ## Business Impact
 
-Based on risk scoring across [10,000 / 50,000] customers:
+Risk scoring across the 10,000-customer base surfaced a concentrated, high-value exposure pocket:
 
 | Risk Category | Customers | % of Base | Trade Value Exposed |
 |---|---|---|---|
-| Critical tier | [critical_count] | [X]% | ₹[critical_trade_value] |
-| High tier | [high_count] | [X]% | — |
-| Flagged anomalous trading | [anomaly_count] | [X]% | — |
+| Critical tier | 1,521 | 15.2% | ₹15.91 billion |
+| High tier | 227 | 2.3% | — |
+| Anomalous trading flagged | 500 | 5.0% | — |
 
-**Segment concentration**: [X]% of Critical-tier customers fall in the HNI/Ultra HNI segments, representing disproportionate trade-value risk relative to their share of the customer base — these customers warrant the highest-touch retention response (dedicated RM outreach within 24–48 hours).
+**Segment concentration**: Critical-tier risk is not evenly distributed. Mass segment accounts for the largest count (815 of 1,521 Critical customers, ~₹10.3B of the ₹15.9B at risk — roughly 65%), while HNI (203), Affluent (457), and Ultra HNI (46) make up the remainder. All 227 High-tier customers are also concentrated in Mass. This means volume risk sits with Mass, but **per-customer exposure is far higher in HNI/Ultra HNI** — the 46 Ultra HNI Critical accounts carry disproportionate trade value relative to their count, justifying the highest-touch response tier (dedicated RM outreach within 24–48 hours) despite being the smallest group.
 
-**Operational translation**: the risk scoring + GenAI layer converts a [10,000 / 50,000]-customer base into a prioritized action queue — [815] customers routed to automated campaigns, [457] to personalized RM email outreach, [167] to urgent RM calls, and [360] flagged for compliance/algo-trading review — rather than leaving relationship teams to manually triage the full customer base.
+**Operational translation**: of the full base, 7,922 customers (79.2%) require no intervention. The remaining 2,078 are routed to a prioritized action queue — 815 to automated push/email campaigns, 457 to personalized RM email outreach, 227 to targeted email campaigns, 167 to urgent RM calls, 360 flagged for compliance/algo-trading review (triggered independently of churn risk, via anomaly detection), and 52 to a 2-week monitoring watchlist — rather than leaving relationship teams to manually triage 10,000 accounts.
 
-**Caveat**: this is a synthetic dataset built for methodology demonstration; the figures above illustrate the *shape* of risk concentration a real brokerage might expect to find, not validated production numbers.
+**Risk convergence**: anomalous trading behavior (500 accounts, 5.0%) substantially overlaps with the Critical risk tier, suggesting that unusual trading patterns and churn risk are often correlated signals rather than independent problems — reinforcing the case for a unified risk-scoring and GenAI action layer rather than siloed churn and surveillance workflows.
 
+**Caveat**: this is a synthetic dataset built for methodology demonstration, not a validated production deployment. Figures illustrate the *shape* of risk concentration a real brokerage might expect to find; no retention-success rate or ₹-savings projection is claimed, since that would require data this project doesn't have.
 
 ---
 
