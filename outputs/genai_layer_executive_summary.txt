@@ -1,0 +1,51 @@
+================================================================================
+EXECUTIVE SUMMARY — CHURN RISK & RETENTION
+bfsi-churn-risk-scoring | GenAI Action Layer
+Generated: 2026-10-03 13:35:09
+Model: openai/gpt-oss-120b
+================================================================================
+
+**HEADLINE**  
+Nearly 15 % of our active client base (1,521 accounts) is classified as critical‑risk, exposing ₹15.9 billion of trade value to potential churn or adverse trading anomalies.
+
+**KEY FINDINGS**  
+- **Critical‑risk concentration:** 1,521 customers (15.2 % of the 10 k‑member universe) account for the full ₹15.9 bn trade‑value at risk, with the Mass segment representing the largest share (815 accounts).  
+- **High‑risk tail:** An additional 227 high‑risk accounts (2.3 %) are all in the Mass segment, indicating a focused vulnerability in that cohort.  
+- **Anomalous activity:** 500 accounts (5 %) triggered the Isolation‑Forest anomaly detector, many of which overlap with the critical tier, suggesting possible algorithmic‑trading misuse or market‑impact events.  
+- **Action allocation:** 7,922 accounts (79 % of the portfolio) require no immediate intervention, while the remaining 1,078 (11 %) have been mapped to targeted outreach—ranging from automated push/email to high‑touch RM calls and a dedicated “algo‑review” flag.
+
+**BUSINESS IMPACT**  
+The ₹15.9 bn trade value tied to critical‑risk customers represents the most exposed slice of revenue and liquidity. Within this, the Mass segment alone contributes roughly ₹10.3 bn (≈ 65 % of at‑risk value), making it the priority for retention and risk mitigation. High‑risk Mass accounts add another ₹2.2 bn of exposure. Failure to act on the 500 anomalous accounts could amplify operational risk, trigger regulatory scrutiny, and erode client confidence, especially among the Ultra‑HNI and HNI cohorts where churn risk is already at 100 %.
+
+**RECOMMENDED ACTIONS**  
+1. **Deploy rapid‑response RM outreach** for the 624 critical‑risk accounts earmarked for personal contact (RM call + email, RM call within 48 hrs). Prioritize Ultra‑HNI and HNI profiles where lifetime value is highest.  
+2. **Launch the automated push‑notification/email campaign** for the 815 Mass‑segment critical accounts, leveraging real‑time usage data to reinforce platform value and address friction points.  
+3. **Initiate a dedicated algorithm‑trading review team** for the 360 flagged accounts, integrating the separate model pipeline to detect misuse and pre‑empt
+
+--------------------------------------------------------------------------------
+SUPPORTING PORTFOLIO DATA
+--------------------------------------------------------------------------------
+
+PORTFOLIO OVERVIEW:
+- Total customers analyzed: 10,000
+- Critical risk tier: 1,521 (15.2%)
+- High risk tier: 227 (2.3%)
+- Anomalous trading behavior flagged: 500 (5.0%)
+- Total trade value at risk (Critical tier): ₹15,910,671,868
+
+ACTION DISTRIBUTION:
+- No action needed: 7,922
+- Automated push notification + email campaign: 815
+- RM call + personalized email: 457
+- Flag for algo trading review — separate model needed: 360
+- Targeted email campaign: 227
+- RM call within 48 hours: 167
+- Watchlist — monitor for 2 weeks: 52
+
+SEGMENT x RISK TIER (Critical/High only):
+risk_tier  Critical  High
+segment                  
+Affluent        457     0
+HNI             203     0
+Mass            815   227
+Ultra HNI        46     0
