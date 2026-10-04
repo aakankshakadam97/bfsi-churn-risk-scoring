@@ -48,6 +48,12 @@ Indian brokerages including full-service and discount brokers.
 
 ---
 
+## Scoring Scope: Test Set vs Full Base
+
+The churn model (notebook 03) was trained on a stratified 80/20 split of the full 50,000-customer synthetic base: 40,000 customers for training, 10,000 held out as a test set. Risk scoring, anomaly detection, and the downstream GenAI retention-strategy layer (notebooks 04–05) operate on this same 10,000-customer test set, not the full 50,000.
+
+This is intentional: it demonstrates the pipeline's behavior on data the model has not seen, which is the standard way to validate a classifier's generalization. It means the risk/action distribution figures throughout this project (e.g., "1,521 Critical-tier customers") describe the test-set subset, not the company's full simulated customer base — a distinction worth noting for anyone extending this project to score the full 50,000.
+
 ## Table 1: customers (50,000 records)
 
 ### Assumptions & Rationale
