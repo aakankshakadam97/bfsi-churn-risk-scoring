@@ -24,8 +24,10 @@ deployment to GenAI-powered decision support.
 | Metric | Value | Source |
 |---|---|---|
 | Simulated customer base | 50,000 customers | Mid-sized brokerage cohort |
-| Trade records | ~2.3 million | 18 months OMS data |
-| Churn rate | ~18% | AMFI dormancy benchmarks |
+| Risk scoring & GenAI layer demo base | 10,000 customers (held-out test set) | 20% stratified split of full base |
+| Trade records | ~5.5 million | 18 months OMS data |
+| Monthly aggregate rows | ~748,915 | — |
+| Churn rate | 18.3% | AMFI dormancy benchmarks |
 | Domain | Retail Brokerage / Securities | NSE-listed instruments |
 | Regulatory context | SEBI compliance | KYC, surveillance requirements |
 
@@ -73,6 +75,8 @@ bfsi-churn-risk-scoring/
 ---
 
 ## Key Results
+ **Scope note**: Model training used the full 50,000-customer base (40,000 train / 10,000 test, stratified split). Risk scoring, anomaly detection, and the GenAI action layer (notebooks 04–05) were run on the 10,000-customer held-out test set — this was a deliberate choice to demonstrate the pipeline on unseen data, consistent with standard train/test evaluation practice, rather than re-scoring the training set the model had already seen.
+
 
 ### Churn Prediction Model
 
@@ -143,7 +147,9 @@ Full methodology documented in [DATA_RATIONALE.md](./DATA_RATIONALE.md)
 
 ## Business Impact
 
-Risk scoring across the 10,000-customer base surfaced a concentrated, high-value exposure pocket:
+> Figures below reflect the 10,000-customer held-out test set used for risk scoring and the GenAI action layer — not the full 50,000-customer base. See Key Results for why this split was used. Scaled proportionally, the full base would be expected to show roughly 5x the absolute customer counts and trade value at risk, though exact figures would require re-scoring the full population.
+
+Risk scoring across the 10,000-customer test set surfaced a concentrated, high-value exposure pocket:
 
 | Risk Category | Customers | % of Base | Trade Value Exposed |
 |---|---|---|---|
